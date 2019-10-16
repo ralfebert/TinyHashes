@@ -12,12 +12,11 @@ extension Data {
         if #available(iOS 13.0, *) {
             return hexString(Insecure.SHA1.hash(data: self).makeIterator())
         } else {
-            let bytes = self.withUnsafeBytes { bytes -> [UInt8] in
-                var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
-                CC_SHA1(bytes.baseAddress, CC_LONG(self.count), &digest)
-                return digest
+            var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
+            self.withUnsafeBytes { bytes in
+                _ = CC_SHA1(bytes.baseAddress, CC_LONG(self.count), &digest)
             }
-            return hexString(bytes.makeIterator())
+            return hexString(digest.makeIterator())
         }
     }
 
@@ -25,12 +24,11 @@ extension Data {
         if #available(iOS 13.0, *) {
             return hexString(SHA256.hash(data: self).makeIterator())
         } else {
-            let bytes = self.withUnsafeBytes { bytes -> [UInt8] in
-                var digest = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-                CC_SHA256(bytes.baseAddress, CC_LONG(self.count), &digest)
-                return digest
+            var digest = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+            self.withUnsafeBytes { bytes in
+                _ = CC_SHA256(bytes.baseAddress, CC_LONG(self.count), &digest)
             }
-            return hexString(bytes.makeIterator())
+            return hexString(digest.makeIterator())
         }
     }
 
