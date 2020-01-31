@@ -9,7 +9,7 @@ private func hexString(_ iterator: Array<UInt8>.Iterator) -> String {
 extension Data {
 
     public var sha1: String {
-        if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, macOS 10.15, *) {
             return hexString(Insecure.SHA1.hash(data: self).makeIterator())
         } else {
             var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
@@ -21,7 +21,7 @@ extension Data {
     }
 
     public var sha256: String {
-        if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, macOS 10.15, *) {
             return hexString(SHA256.hash(data: self).makeIterator())
         } else {
             var digest = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
